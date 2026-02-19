@@ -29,7 +29,7 @@ const PROJECTS = {
 
 const EXPERIENCE = [
   { role: "Software Engineer", company: "Heathrow Airport (via Vanderlande)", period: "2021 — 2023", description: "Worked on mission-critical baggage handling systems across Terminal 2 and Terminal 5. Real-time C#/.NET applications, PLC integration, and SCADA systems operating 24/7 with zero tolerance for downtime." },
-  { role: "Founder & Lead Developer", company: "FM Studio — Self-employed", period: "2019 — Present", description: "Running a software studio partnering with businesses across Ireland, UK, and Australia. Building websites, web apps, mobile apps, and creative technology from concept to launch." },
+  { role: "Founder & Lead Developer", company: "FM Software — Self-employed", period: "2019 — Present", description: "Running a software studio partnering with businesses across Ireland, UK, and Australia. Building websites, web apps, mobile apps, and creative technology from concept to launch." },
   { role: "MSc Software Engineering", company: "University of Hertfordshire", period: "2020 — 2021", description: "Graduated with Distinction. Thesis on modern web application architecture and performance optimisation." },
   { role: "BEng Electronic & Computer Engineering", company: "NUI Galway", period: "2014 — 2018", description: "Foundation in hardware, embedded systems, signal processing, and software development." },
 ];
@@ -166,11 +166,11 @@ export default function Professional() {
             <div className="hero__grid">
               <div className="hero__left">
                 <div className="hero__label">
-                  <span className="hero__label-diamond">◆</span><span>FM Studio</span>
+                  <span className="hero__label-diamond">◆</span><span>FM Software</span>
                   <span className="hero__label-line" /><span>Galway, Ireland</span>
                 </div>
                 <h1 className="hero__name">Let's Build<br /><span className="gold-italic">Software</span><br />Together</h1>
-                <p className="hero__intro">You bring the idea — I handle the code. FM Studio partners with businesses to design, develop, and ship digital products that actually work. From web apps and websites to mobile and creative tech.</p>
+                <p className="hero__intro">You bring the idea — I handle the code. FM Software partners with businesses to design, develop, and ship digital products that actually work. From web apps and websites to mobile and creative tech.</p>
                 <div className="hero__actions">
                   <button className="btn btn--primary" onClick={() => scrollTo("projects")}>See Our Work <SendIcon /></button>
                   <button className="btn btn--ghost" onClick={() => scrollTo("contact")}>Start a Project</button>
@@ -222,13 +222,13 @@ export default function Professional() {
                 </div>
                 <div className="about__photo-caption">
                   <span className="about__photo-name">Fechín Mitchell</span>
-                  <span className="about__photo-title">Founder, FM Studio</span>
+                  <span className="about__photo-title">Founder, FM Software</span>
                 </div>
               </div>
               {/* Text */}
               <div className="about__text">
                 <h2 className="section__title">Your Vision.<br /><span className="gold-italic">My Code.</span></h2>
-                <p className="about__p">FM Studio is a one-person software studio run by Fechín Mitchell — a software engineer from Galway with a Master's (Distinction) and hands-on experience building mission-critical systems at Heathrow Airport.</p>
+                <p className="about__p">FM Software is a one-person software studio run by Fechín Mitchell — a software engineer from Galway with a Master's (Distinction) and hands-on experience building mission-critical systems at Heathrow Airport.</p>
                 <p className="about__p">Working with me is simple: you tell me what you need, I listen, I ask the right questions, then I build it properly. No agency overhead, no middlemen, no fluff — just direct communication with the person writing your code.</p>
                 <p className="about__p">Whether it's a client portal, a company website, or something more creative — I treat every project with the same standard: it ships on time, it works flawlessly, and it looks unforgettable.</p>
               </div>
