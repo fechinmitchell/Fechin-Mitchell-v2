@@ -11,12 +11,13 @@ const NAV_ITEMS = [
 
 const PROJECTS = {
   clients: [
-    { id: 1, title: "LGBT Pride Path", subtitle: "Community platform & resource hub", description: "Designed and developed lgbtpridepath.org — a platform connecting the LGBTQ+ community with resources, events, and safe spaces. Full-stack build with a focus on accessibility and inclusive design.", tags: ["React", "Node.js", "CSS", "Accessibility"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed", featured: true },
-    { id: 2, title: "LGBT Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed" },
-    { id: 3, title: "Narayan Travelstead Law Portal", subtitle: "Legal services client portal", description: "Secure client-facing portal for Narayan Travelstead law firm. Document management, case tracking, appointment scheduling, and secure messaging — built with a focus on confidentiality and ease of use.", tags: ["React", "Node.js", "Express", "PostgreSQL"], category: "Web Application", status: "in-progress", featured: true },
-    { id: 4, title: "Clair Dunne Psychotherapy", subtitle: "Professional therapy practice", description: "Full brand presence and web platform for a Dublin-based psychotherapist. Calming, accessible design with booking integration and content management.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clairdunne.com/", status: "completed" },
-    { id: 5, title: "Clearvue Services", subtitle: "Commercial cleaning company", description: "Corporate website for a professional cleaning services company. Service showcases, quote request system, and responsive design throughout.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clearvueservices.com", status: "completed" },
-    { id: 6, title: "Switch Construction", subtitle: "Construction & fit-out", description: "Professional web presence for a construction firm. Portfolio gallery, project case studies, and lead generation with modern responsive layouts.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://switchconstruction.com", status: "completed" },
+    { id: 1, title: "Narayan Travelstead Law Portal", subtitle: "Legal services client portal", description: "Secure client-facing portal for Narayan Travelstead law firm. Document management, case tracking, appointment scheduling, and secure messaging — built with a focus on confidentiality and ease of use.", tags: ["React", "Node.js", "Express", "PostgreSQL"], category: "Web Application", status: "in-progress", featured: true },
+    { id: 2, title: "Clair Dunne Psychotherapy", subtitle: "Professional therapy practice", description: "Full brand presence and web platform for a Dublin-based psychotherapist. Calming, accessible design with booking integration and content management.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clairdunne.com/", status: "completed" },
+    { id: 3, title: "Clearvue Services", subtitle: "Commercial cleaning company", description: "Corporate website for a professional cleaning services company. Service showcases, quote request system, and responsive design throughout.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clearvueservices.com", status: "completed" },
+    { id: 4, title: "Switch Construction", subtitle: "Construction & fit-out", description: "Professional web presence for a construction firm. Portfolio gallery, project case studies, and lead generation with modern responsive layouts.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://switchconstruction.com", status: "completed" },
+    { id: 5, title: "Pride Path", subtitle: "Community platform & resource hub", description: "Designed and developed lgbtpridepath.org — a platform connecting the LGBTQ+ community with resources, events, and safe spaces. Full-stack build with a focus on accessibility and inclusive design.", tags: ["React", "Node.js", "CSS", "Accessibility"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed", featured: true },
+    { id: 6, title: "Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed" },
+
   ],
   personal: [
     { id: 7, title: "Spark AR Filters", subtitle: "500K+ impressions worldwide", description: "Collection of augmented reality filters on Meta's Spark AR platform. Gained viral traction with over half a million organic impressions.", tags: ["Spark AR", "JavaScript", "3D"], category: "AR Development", website: "https://www.facebook.com/sparkarhub", stats: { impressions: "~500K", reach: "Global" }, featured: true, status: "completed" },
@@ -70,8 +71,12 @@ export default function Professional() {
   const [activeSection, setActiveSection] = useState("hero");
   const [projectTab, setProjectTab] = useState("clients");
   const [tabAnimating, setTabAnimating] = useState(false);
+  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRefs = useRef({});
+  const glowRef = useRef(null);
+  const rafMouse = useRef(null);
 
+  // Scroll tracking
   useEffect(() => {
     let ticking = false;
     const onScroll = () => {
@@ -96,6 +101,24 @@ export default function Professional() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
+  // Mouse glow tracking
+  useEffect(() => {
+    const onMouseMove = (e) => {
+      if (rafMouse.current) cancelAnimationFrame(rafMouse.current);
+      rafMouse.current = requestAnimationFrame(() => {
+        if (glowRef.current) {
+          glowRef.current.style.setProperty('--mx', `${e.clientX}px`);
+          glowRef.current.style.setProperty('--my', `${e.clientY}px`);
+        }
+      });
+    };
+    window.addEventListener("mousemove", onMouseMove, { passive: true });
+    return () => {
+      window.removeEventListener("mousemove", onMouseMove);
+      if (rafMouse.current) cancelAnimationFrame(rafMouse.current);
+    };
+  }, []);
+
   const scrollTo = useCallback((id) => {
     sectionRefs.current[id]?.scrollIntoView({ behavior: "smooth" });
   }, []);
@@ -114,12 +137,14 @@ export default function Professional() {
   const currentProjects = PROJECTS[projectTab];
 
   return (
-    <div className="pro">
+    <div className="pro" ref={glowRef}>
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
 
+      {/* Background */}
       <div className="bg-layer">
         <div className="bg-orb bg-orb--burgundy" />
         <div className="bg-orb bg-orb--forest" />
+        <div className="bg-glow" />
         <div className="bg-grain" />
       </div>
 
@@ -214,10 +239,8 @@ export default function Professional() {
           <div className="section__container section__container--wide">
             <div className="section__label"><span className="section__num">01</span><span className="section__line" /><span>How It Works</span></div>
             <div className="about__layout">
-              {/* Photo */}
               <div className="about__photo-wrap">
                 <div className="about__photo">
-                  {/* Replace src with your actual image path, e.g. "/images/fechin.jpg" */}
                   <img src="/images/fechin.jpg" alt="Fechín Mitchell" className="about__photo-img" />
                 </div>
                 <div className="about__photo-caption">
@@ -225,14 +248,12 @@ export default function Professional() {
                   <span className="about__photo-title">Software Developer</span>
                 </div>
               </div>
-              {/* Text */}
               <div className="about__text">
                 <h2 className="section__title">Your Vision.<br /><span className="gold-italic">My Code.</span></h2>
                 <p className="about__p">FM Software is a one-person software studio run by Fechín Mitchell — a software engineer from Galway with a Master's (Distinction) and hands-on experience building mission-critical systems at Heathrow Airport.</p>
                 <p className="about__p">Working with me is simple: you tell me what you need, I listen, I ask the right questions, then I build it properly. No agency overhead, no middlemen, no fluff — just direct communication with the person writing your code.</p>
                 <p className="about__p">Whether it's a client portal, a company website, or something more creative — I treat every project with the same standard: it ships on time, it works flawlessly, and it looks unforgettable.</p>
               </div>
-              {/* Skills */}
               <div className="about__skills">
                 <h3 className="about__skills-title">What I Work With</h3>
                 {SKILLS.map((s) => (
@@ -328,12 +349,12 @@ export default function Professional() {
             <div className="section__label section__label--center">
               <span className="section__num">04</span><span className="section__line" /><span>Get In Touch</span>
             </div>
-            <h2 className="section__title section__title--center">Have an Project?<br /><span className="gold-italic">Let's Talk.</span></h2>
+            <h2 className="section__title section__title--center">Have a Project?<br /><span className="gold-italic">Let's Talk.</span></h2>
             <p className="contact__p">Whether you need a full web app, a fresh website, or just want to explore what's possible — I'd love to hear about your project. No commitment, just a conversation.</p>
             <div className="contact__grid">
               <a href="mailto:fechinmitchell@gmail.com" className="contact__card">
                 <span className="contact__card-icon">✉</span><span className="contact__card-label">Email</span>
-                <span className="contact__card-val">fechinmitchell@gmail.com</span>
+                <span className="contact__card-val">fechinmitchell1996@gmail.com</span>
               </a>
               <a href="https://github.com/fechinmitchell" target="_blank" rel="noopener noreferrer" className="contact__card">
                 <span className="contact__card-icon">⌘</span><span className="contact__card-label">GitHub</span>
@@ -349,7 +370,7 @@ export default function Professional() {
               </a>
             </div>
             <div className="contact__cta">
-              <a href="mailto:fechinmitchelldesign@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
+              <a href="mailto:fechinmitchell1996@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
             </div>
             <footer className="footer">
               <span className="footer__line" />
