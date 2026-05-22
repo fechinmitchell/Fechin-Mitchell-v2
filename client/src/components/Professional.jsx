@@ -16,8 +16,7 @@ const PROJECTS = {
     { id: 3, title: "Clearvue Services", subtitle: "Commercial cleaning company", description: "Corporate website for a professional cleaning services company. Service showcases, quote request system, and responsive design throughout.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clearvueservices.com", status: "completed" },
     { id: 4, title: "Switch Construction", subtitle: "Construction & fit-out", description: "Professional web presence for a construction firm. Portfolio gallery, project case studies, and lead generation with modern responsive layouts.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://switchconstruction.com", status: "completed" },
     { id: 5, title: "Pride Path", subtitle: "Community platform & resource hub", description: "Designed and developed lgbtpridepath.org — a platform connecting the LGBTQ+ community with resources, events, and safe spaces. Full-stack build with a focus on accessibility and inclusive design.", tags: ["React", "Node.js", "CSS", "Accessibility"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed", featured: true },
-    { id: 6, title: "Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed" },
-
+    { id: 26, title: "Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed" },
   ],
   personal: [
     { id: 7, title: "Spark AR Filters", subtitle: "500K+ impressions worldwide", description: "Collection of augmented reality filters on Meta's Spark AR platform. Gained viral traction with over half a million organic impressions.", tags: ["Spark AR", "JavaScript", "3D"], category: "AR Development", website: "https://www.facebook.com/sparkarhub", stats: { impressions: "~500K", reach: "Global" }, featured: true, status: "completed" },
@@ -66,15 +65,24 @@ function StatusBadge({ status }) {
   );
 }
 
+// Floating glass orbs data
+const GLASS_ORBS = [
+  { size: 180, x: '10%', y: '15%', speed: 0.3, color: 'burgundy' },
+  { size: 120, x: '80%', y: '25%', speed: 0.5, color: 'gold' },
+  { size: 200, x: '65%', y: '55%', speed: 0.2, color: 'forest' },
+  { size: 90,  x: '25%', y: '70%', speed: 0.6, color: 'gold' },
+  { size: 150, x: '85%', y: '80%', speed: 0.35, color: 'burgundy' },
+  { size: 100, x: '45%', y: '40%', speed: 0.45, color: 'forest' },
+];
+
 export default function Professional() {
   const [scrollY, setScrollY] = useState(0);
   const [activeSection, setActiveSection] = useState("hero");
   const [projectTab, setProjectTab] = useState("clients");
   const [tabAnimating, setTabAnimating] = useState(false);
-  const [mousePos, setMousePos] = useState({ x: 0, y: 0 });
   const sectionRefs = useRef({});
-  const glowRef = useRef(null);
-  const rafMouse = useRef(null);
+  const glowOuterRef = useRef(null);
+  const glowCoreRef = useRef(null);
 
   // Scroll tracking
   useEffect(() => {
@@ -101,21 +109,28 @@ export default function Professional() {
     return () => window.removeEventListener("scroll", onScroll);
   }, []);
 
-  // Mouse glow tracking
+  // Mouse glow — direct style manipulation for guaranteed visibility
   useEffect(() => {
+    let rafId = null;
     const onMouseMove = (e) => {
-      if (rafMouse.current) cancelAnimationFrame(rafMouse.current);
-      rafMouse.current = requestAnimationFrame(() => {
-        if (glowRef.current) {
-          glowRef.current.style.setProperty('--mx', `${e.clientX}px`);
-          glowRef.current.style.setProperty('--my', `${e.clientY}px`);
+      if (rafId) cancelAnimationFrame(rafId);
+      rafId = requestAnimationFrame(() => {
+        const x = e.clientX;
+        const y = e.clientY;
+        if (glowOuterRef.current) {
+          glowOuterRef.current.style.left = `${x}px`;
+          glowOuterRef.current.style.top = `${y}px`;
+        }
+        if (glowCoreRef.current) {
+          glowCoreRef.current.style.left = `${x}px`;
+          glowCoreRef.current.style.top = `${y}px`;
         }
       });
     };
     window.addEventListener("mousemove", onMouseMove, { passive: true });
     return () => {
       window.removeEventListener("mousemove", onMouseMove);
-      if (rafMouse.current) cancelAnimationFrame(rafMouse.current);
+      if (rafId) cancelAnimationFrame(rafId);
     };
   }, []);
 
@@ -137,16 +152,45 @@ export default function Professional() {
   const currentProjects = PROJECTS[projectTab];
 
   return (
-    <div className="pro" ref={glowRef}>
+    <div className="pro">
       <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;500;600;700&family=Cormorant+Garamond:ital,wght@0,400;0,500;0,600;0,700;1,500&display=swap" rel="stylesheet" />
 
-      {/* Background */}
+      {/* Background layer */}
       <div className="bg-layer">
         <div className="bg-orb bg-orb--burgundy" />
         <div className="bg-orb bg-orb--forest" />
-        <div className="bg-glow" />
         <div className="bg-grain" />
       </div>
+
+      {/* Floating glass orbs — parallax on scroll */}
+      <div className="glass-orbs" aria-hidden="true">
+        {GLASS_ORBS.map((orb, i) => (
+          <div
+            key={i}
+            className={`glass-orb glass-orb--${orb.color}`}
+            style={{
+              width: orb.size,
+              height: orb.size,
+              left: orb.x,
+              top: orb.y,
+              transform: `translateY(${scrollY * orb.speed * -0.15}px)`,
+            }}
+          />
+        ))}
+      </div>
+
+      {/* Mouse glow — outer wash */}
+      <div
+        ref={glowOuterRef}
+        className="mouse-glow mouse-glow--outer"
+        aria-hidden="true"
+      />
+      {/* Mouse glow — bright core */}
+      <div
+        ref={glowCoreRef}
+        className="mouse-glow mouse-glow--core"
+        aria-hidden="true"
+      />
 
       <nav className="nav" style={{
         "--p": eased, position: "fixed", zIndex: 100,
@@ -156,16 +200,12 @@ export default function Professional() {
         width: eased < 0.5 ? "100%" : "auto",
         padding: eased < 0.3 ? "1rem 2rem" : "0.8rem",
       }}>
-        <div className="nav__inner" style={{
+        <div className="nav__inner glass" style={{
           flexDirection: eased > 0.5 ? "column" : "row",
           justifyContent: "center",
           gap: eased > 0.5 ? "0.3rem" : "0.5rem",
-          background: `rgba(8, 8, 8, ${0.7 + eased * 0.25})`,
-          backdropFilter: "blur(20px)", WebkitBackdropFilter: "blur(20px)",
           borderRadius: eased > 0.5 ? "16px" : "50px",
           padding: eased > 0.5 ? "0.8rem 0.5rem" : "0.4rem 0.6rem",
-          border: "1px solid rgba(255,255,255,0.06)",
-          boxShadow: "0 8px 32px rgba(0,0,0,0.4)",
         }}>
           {NAV_ITEMS.map(({ id, label, icon }) => (
             <button key={id} onClick={() => scrollTo(id)}
@@ -202,7 +242,7 @@ export default function Professional() {
                 </div>
               </div>
               <div className="hero__right">
-                <div className="hero__highlight-card">
+                <div className="hero__highlight-card glass">
                   <div className="hero__highlight">
                     <span className="hero__highlight-val">6+</span>
                     <span className="hero__highlight-label">Client Projects Delivered</span>
@@ -240,7 +280,7 @@ export default function Professional() {
             <div className="section__label"><span className="section__num">01</span><span className="section__line" /><span>How It Works</span></div>
             <div className="about__layout">
               <div className="about__photo-wrap">
-                <div className="about__photo">
+                <div className="about__photo glass">
                   <img src="/images/fechin.jpg" alt="Fechín Mitchell" className="about__photo-img" />
                 </div>
                 <div className="about__photo-caption">
@@ -287,7 +327,7 @@ export default function Professional() {
             </div>
             <div className={`proj-grid ${tabAnimating ? "proj-grid--exit" : "proj-grid--enter"}`}>
               {currentProjects.map((p, i) => (
-                <div key={p.id} className={`card ${p.featured ? "card--featured" : ""}`} style={{ animationDelay: `${i * 0.07}s` }}>
+                <div key={p.id} className={`card glass ${p.featured ? "card--featured" : ""}`} style={{ animationDelay: `${i * 0.07}s` }}>
                   <div className="card__accent" />
                   <div className="card__head">
                     <span className="card__cat">{p.category}</span>
@@ -352,25 +392,25 @@ export default function Professional() {
             <h2 className="section__title section__title--center">Have a Project?<br /><span className="gold-italic">Let's Talk.</span></h2>
             <p className="contact__p">Whether you need a full web app, a fresh website, or just want to explore what's possible — I'd love to hear about your project. No commitment, just a conversation.</p>
             <div className="contact__grid">
-              <a href="mailto:fechinmitchell@gmail.com" className="contact__card">
+              <a href="mailto:fechinmitchell1996@gmail.com" className="contact__card glass">
                 <span className="contact__card-icon">✉</span><span className="contact__card-label">Email</span>
-                <span className="contact__card-val">fechinmitchell1996@gmail.com</span>
+                <span className="contact__card-val">fechinmitchell@gmail.com</span>
               </a>
-              <a href="https://github.com/fechinmitchell" target="_blank" rel="noopener noreferrer" className="contact__card">
+              <a href="https://github.com/fechinmitchell" target="_blank" rel="noopener noreferrer" className="contact__card glass">
                 <span className="contact__card-icon">⌘</span><span className="contact__card-label">GitHub</span>
                 <span className="contact__card-val">fechinmitchell</span>
               </a>
-              <a href="https://linkedin.com/in/fechinmitchell" target="_blank" rel="noopener noreferrer" className="contact__card">
+              <a href="https://www.linkedin.com/in/fech%C3%ADn-mitchell/" target="_blank" rel="noopener noreferrer" className="contact__card glass">
                 <span className="contact__card-icon">◈</span><span className="contact__card-label">LinkedIn</span>
                 <span className="contact__card-val">fechinmitchell</span>
               </a>
-              <a href="#" className="contact__card">
+              <a href="#" className="contact__card glass">
                 <span className="contact__card-icon">𝕏</span><span className="contact__card-label">Twitter / X</span>
                 <span className="contact__card-val">@fechinmitchell</span>
               </a>
             </div>
             <div className="contact__cta">
-              <a href="mailto:fechinmitchell1996@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
+              <a href="mailto:fechinmitchelldesign@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
             </div>
             <footer className="footer">
               <span className="footer__line" />
