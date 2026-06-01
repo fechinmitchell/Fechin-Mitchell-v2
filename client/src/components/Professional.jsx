@@ -15,8 +15,8 @@ const PROJECTS = {
     { id: 2, title: "Clair Dunne Psychotherapy", subtitle: "Professional therapy practice", description: "Full brand presence and web platform for a Dublin-based psychotherapist. Calming, accessible design with booking integration and content management.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clairdunne.com/", status: "completed" },
     { id: 3, title: "Clearvue Services", subtitle: "Commercial cleaning company", description: "Corporate website for a professional cleaning services company. Service showcases, quote request system, and responsive design throughout.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://clearvueservices.com", status: "completed" },
     { id: 4, title: "Switch Construction", subtitle: "Construction & fit-out", description: "Professional web presence for a construction firm. Portfolio gallery, project case studies, and lead generation with modern responsive layouts.", tags: ["HTML", "CSS", "JavaScript"], category: "Web Design & Development", website: "https://switchconstruction.com", status: "completed" },
-    { id: 5, title: "Pride Path", subtitle: "Community platform & resource hub", description: "Designed and developed lgbtpridepath.org — a platform connecting the LGBTQ+ community with resources, events, and safe spaces. Full-stack build with a focus on accessibility and inclusive design.", tags: ["React", "Node.js", "CSS", "Accessibility"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed", featured: true },
-    { id: 26, title: "Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed" },
+    { id: 5, title: "Pride Path", subtitle: "Community platform & resource hub", description: "Designed and developed lgbtpridepath.org — a platform connecting the LGBTQ+ community with resources, events, and safe spaces. Full-stack build with a focus on accessibility and inclusive design.", tags: ["React", "Node.js", "CSS", "Accessibility"], category: "Web Application", website: "https://lgbtpridepath.org", status: "completed"},
+    { id: 6, title: "Pride Widget & Map", subtitle: "Embeddable widget & interactive map", description: "Interactive map and embeddable widget allowing organisations to showcase LGBTQ+ friendly locations and events. Built as a companion product to LGBT Pride Path with real-time data.", tags: ["React", "Mapbox", "JavaScript", "API"], category: "Web Application", website: "https://www.lgbtnearme.org/widget", status: "completed" },
   ],
   personal: [
     { id: 7, title: "Spark AR Filters", subtitle: "500K+ impressions worldwide", description: "Collection of augmented reality filters on Meta's Spark AR platform. Gained viral traction with over half a million organic impressions.", tags: ["Spark AR", "JavaScript", "3D"], category: "AR Development", website: "https://www.facebook.com/sparkarhub", stats: { impressions: "~500K", reach: "Global" }, featured: true, status: "completed" },
@@ -29,7 +29,7 @@ const PROJECTS = {
 
 const EXPERIENCE = [
   { role: "Lead Developer", company: "FM Software — Self-employed", period: "2023 — Present", description: "Running a software studio partnering with businesses across USA, Ireland, UK, and Australia. Building websites, web apps, mobile apps, and creative technology from concept to launch." },
-  { role: "MSc Software Engineering", company: "University of Hertfordshire", period: "2022 — 2023", description: "Graduated with Distinction. Thesis on modern web application architecture and performance optimisation." },
+  { role: "MSc Software Engineering", company: "University of Hertfordshire", period: "2022 — 2023", description: "Graduated with Distinction (3.83 GPA). Thesis: MindChat — fine-tuned a GPT model on real doctor-to-patient conversations around dementia and Alzheimer's to see if a specialised model could outperform the base model at generating clinical responses." },
   { role: "Software Engineer", company: "Heathrow Airport", period: "2019 — 2020", description: "Worked on mission-critical systems across Terminals. Real-time C#/.NET applications, PLC integration, and SCADA systems operating 24/7 with zero tolerance for downtime." },
   { role: "BEng Electronic & Computer Engineering", company: "NUI Galway", period: "2014 — 2018", description: "Foundation in hardware, embedded systems, signal processing, and software development." },
 ];
@@ -394,7 +394,7 @@ export default function Professional() {
             <div className="contact__grid">
               <a href="mailto:fechinmitchell1996@gmail.com" className="contact__card glass">
                 <span className="contact__card-icon">✉</span><span className="contact__card-label">Email</span>
-                <span className="contact__card-val">fechinmitchell@gmail.com</span>
+                <span className="contact__card-val">fechinmitchell1996@gmail.com</span>
               </a>
               <a href="https://github.com/fechinmitchell" target="_blank" rel="noopener noreferrer" className="contact__card glass">
                 <span className="contact__card-icon">⌘</span><span className="contact__card-label">GitHub</span>
@@ -410,11 +410,11 @@ export default function Professional() {
               </a>
             </div>
             <div className="contact__cta">
-              <a href="mailto:fechinmitchelldesign@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
+              <a href="mailto:fechinmitchell1996@gmail.com" className="btn btn--primary btn--lg">Start a Project <SendIcon /></a>
             </div>
             <footer className="footer">
               <span className="footer__line" />
-              <p className="footer__text">© 2025 FM Studio · Fechín Mitchell · Galway, Ireland</p>
+              <p className="footer__text">© 2026 FM Studio · Fechín Mitchell · Galway, Ireland</p>
             </footer>
           </div>
         </section>
